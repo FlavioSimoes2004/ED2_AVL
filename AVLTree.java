@@ -3,145 +3,143 @@ import java.util.LinkedList;
 public class AVLTree <t extends Comparable<t>>{
 
     private Node<t> root;
+    private boolean status;
 
     public AVLTree(){
         root = null;
+        status = false;
     }
 
     public void inserir(t info){
         if(root == null)
         {
             root = new Node<t>(info);
+            status = true;
         }
         else
         {
-            root = insertNode(root, info);
+            root = inserirNode(root, info);
         }
     }
 
-    private Node<t> insertNode(Node<t> r, t info){
+    private Node<t> inserirNode(Node<t> r, t info){
         if(r == null)
         {
             r = new Node<t>(info);
+            status = true;
         }
-        else if(info.compareTo(r.getInfo()) < 0)
+        else if(info.compareTo(r.getInfo()) < 0) //ESQUERDA
         {
-            r.setLeft(insertNode(r.getLeft(), info));
-        }
-        else
-        {
-            r.setRight(insertNode(r.getRight(), info));
-        }
-
-        checkBal(r);
-
-        if(r.getFatBal() > 1)
-        {
-            if(r.getRight().getLeft() == null)
+            r.setLeft(inserirNode(r.getLeft(), info));
+            if(status)
             {
-                return rodarSimplesEsq(r, r.getRight());
+                switch(r.getFatBal())
+                {
+                    case 0:
+                        r.setFatBal(-1);
+                    break;
+    
+                    case 1:
+                        r.setFatBal(0);
+                        status = false;
+                    break;
+    
+                    case -1:
+                        if(r.getLeft().getFatBal() == -1)
+                        {
+                            r = rotateSimpleRight(r);
+                        }
+                        else
+                        {
+                            r = rotateDoubleRight(r);
+                        }
+                        status = false;
+                    break;
+                }
             }
-            else
-            {
-                return rodarDuplaEsq(r, r.getRight().getLeft());
-            }
         }
-        if(r.getFatBal() < -1)
+        else //DIREITA
         {
-            if(r.getLeft().getRight() == null)
+            r.setRight(inserirNode(r.getRight(), info));
+            if(status)
             {
-                return rodarSimplesDir(r, r.getLeft());
-            }
-            else
-            {
-                return rodarDuplaDir(r, r.getLeft().getRight());
+                switch(r.getFatBal())
+                {
+                    case 0:
+                        r.setFatBal(1);
+                    break;
+    
+                    case -1:
+                        r.setFatBal(0);
+                        status = false;
+                    break;
+    
+                    case 1:
+                        if(r.getRight().getFatBal() == 1)
+                        {
+                            r = rotateSimpleLeft(r);
+                        }
+                        else
+                        {
+                            r = rotateDoubleLeft(r);
+                        }
+                        status = false;
+                    break;
+                }
             }
         }
 
         return r;
     }
 
-    private int Bal(Node<t> r, int num){
-        if(r == null)
-        {
-            return num;
-        }
+    private Node<t> rotateSimpleLeft(Node<t> a){
+        Node<t> b = a.getRight();
+        b.setLeft(a);
+        a = b;
 
-        int left = Bal(r.getLeft(), num + 1);
-        int right = Bal(r.getRight(), num + 1);
-
-        int result = right - left;
-        return result;
+        a.setFatBal(0);
+        return a;
     }
 
-    private void checkBal(Node<t> r){
-        if(r.getLeft() == null && r.getRight() == null)
-        {
-            r.setFatBal(0);
-        }
-        else if(r.getLeft() != null && r.getRight() != null)
-        {
-            r.setFatBal(Bal(r, 0));
-        }
-        else
-        {
-            if(r.getLeft() == null)
-            {
-                r.setFatBal(Bal(r, 0));
-            }
-            else
-            {
-                r.setFatBal(Bal(r, 0));
-            }
-        }
+    private Node<t> rotateSimpleRight(Node<t> a){
+        Node<t> b = a.getLeft();
+        b.setRight(a);
+        a = b;
+
+        a.setFatBal(0);
+        return a;
     }
 
-    private Node<t> rodarSimplesEsq(Node<t> r, Node<t> right){
-        right.setLeft(r);
-        right.getLeft().setRight(null);
+    private Node<t> rotateDoubleLeft(Node<t> a){
+        Node<t> b, c;
+        b = a.getRight();
+        c = b.getLeft();
 
-        checkBal(right.getLeft());
-        checkBal(right.getRight());
-        checkBal(right);
+        a.setRight(null);
+        b.setLeft(null);
+        c.setLeft(a);
+        c.setRight(b);
 
-        return right;        
+        c = a;
+
+        a.setFatBal(0);
+        return a;
     }
 
-    private Node<t> rodarSimplesDir(Node<t> r, Node<t> left){
-        left.setRight(r);
-        left.getRight().setLeft(null);
+    private Node<t> rotateDoubleRight(Node<t> a){
+        Node<t> b, c;
+        b = a.getLeft();
+        c = b.getRight();
 
-        checkBal(left.getRight());
-        checkBal(left.getLeft());
-        checkBal(left);
+        a.setLeft(null);
+        b.setRight(null);
+        c.setLeft(c);
+        c.setRight(a);
 
-        return left;
-    }
+        c = a;
 
-    private Node<t> rodarDuplaEsq(Node<t> x, Node<t> left){
-        left.setRight(x.getRight());
-        left.getRight().setLeft(null);
-        left.setLeft(x);
-        left.getLeft().setRight(null);
-
-        checkBal(left.getRight());
-        checkBal(left.getLeft());
-        checkBal(left);
-
-        return left;
-    }
-
-    private Node<t> rodarDuplaDir(Node<t> x, Node<t> right){
-        right.setLeft(x.getLeft());
-        right.getLeft().setRight(null);
-        right.setRight(x);
-        right.getRight().setLeft(null);
-
-        checkBal(right.getLeft());
-        checkBal(right.getRight());
-        checkBal(right);
-
-        return right;
+        a.setFatBal(0);
+        return a;
     }
 
     public void passeioEmOrdem(){
