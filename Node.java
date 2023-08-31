@@ -33,7 +33,6 @@ public class Node <t>{
         return right;
     }
 
-
     void setInfo(t info){
         this.info = info;
     }
