@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class AVLTree <t extends Comparable<t>>{
 
@@ -71,7 +70,8 @@ public class AVLTree <t extends Comparable<t>>{
         int left = Bal(r.getLeft(), num + 1);
         int right = Bal(r.getRight(), num + 1);
 
-        return right - left;
+        int result = right - left;
+        return result;
     }
 
     private void checkBal(Node<t> r){
