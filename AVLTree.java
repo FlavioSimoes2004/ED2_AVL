@@ -181,4 +181,60 @@ public class AVLTree <t extends Comparable<t>>{
             }
         }
     }
+
+    public void remove(t info){
+        if(root == null)
+        {
+            System.out.println("VAZIO");
+        }
+        else
+        {
+            root = removeNode(root, info);
+        }
+    }
+
+    private Node<t> removeNode(Node<t> r, t info){
+        if(r != null)
+        {
+            int compare = info.compareTo(r.getInfo());
+            if(compare == 0)
+            {
+                r = removeNode(r);
+            }
+            else if(compare < 0)
+            {
+                r.setLeft(removeNode(r.getLeft(), info));
+            }
+            else
+            {
+                r.setRight(removeNode(r.getRight(), info));
+            }
+        }
+
+        return r;
+    }
+
+    private Node<t> removeNode(Node<t> r){
+        if(r.getLeft() == null && r.getRight() == null) //SEM FILHOS
+        {
+            return null;
+        }
+        else if(r.getLeft() == null)
+        {
+            return r.getRight();
+        }
+        else if(r.getRight() == null)
+        {
+            return r.getLeft();
+        }
+        else //TEM AMBOS
+        {
+            Node<t> pai, filho;
+            pai = r;
+            filho = pai.getLeft();
+            //while()
+
+            return r;
+        }
+    }
 }
