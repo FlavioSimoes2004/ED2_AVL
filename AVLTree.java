@@ -272,23 +272,40 @@ public class AVLTree <t extends Comparable<t>>{
 
             if(r.getLeft().equals(filho))
             {
-                pai.setLeft(null);
-                filho.setLeft(r.getLeft());
-                filho.setRight(r.getRight());
-                r = filho;
+                pai.setLeft(filho.getLeft());
+                pai.setFatBal(0);
+                if(filho.getLeft() != null)
+                {
+                    pai.setFatBal(-1);
+                }
             }
             else
             {
                 pai.setRight(filho.getLeft());
-                filho.setLeft(r.getLeft());
-                filho.setRight(r.getRight());
-                r = filho;
+                pai.setFatBal(pai.getFatBal() - 1);
             }
-
-            /*pai.setRight(filho.getLeft());
+            
             filho.setLeft(r.getLeft());
             filho.setRight(r.getRight());
-            r = filho;*/
+            filho.setFatBal(r.getFatBal() + 1);
+            r = filho;
+            switch(r.getFatBal())
+            {
+                case 2:
+                    int right = r.getRight().getFatBal();
+                    if(right == 1)
+                    {
+                        r = rotateSimpleRight(r);
+                    }
+                    else if(right == -1)
+                    {
+                        r = rotateDoubleRight(r);
+                    }
+                break;
+
+                default:
+                break;
+            }
             
             return r;
         }

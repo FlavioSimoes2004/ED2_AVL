@@ -9,8 +9,10 @@ public class Main {
         tree.inserir(28);
         tree.inserir(27);
         tree.inserir(6);
+        tree.inserir(4);
 
         tree.remove(10);
+        tree.inserir(5);
 
         tree.passeioEmOrdem();
         System.out.println("");
