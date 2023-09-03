@@ -94,19 +94,21 @@ public class AVLTree <t extends Comparable<t>>{
 
     private Node<t> rotateSimpleLeft(Node<t> a){
         Node<t> b = a.getRight();
+        a.setRight(b.getLeft());
         b.setLeft(a);
-        a = b;
-
         a.setFatBal(0);
+
+        a = b;
         return a;
     }
 
     private Node<t> rotateSimpleRight(Node<t> a){
         Node<t> b = a.getLeft();
+        a.setLeft(b.getRight());
         b.setRight(a);
-        a = b;
-
         a.setFatBal(0);
+        
+        a = b;
         return a;
     }
 
@@ -115,13 +117,28 @@ public class AVLTree <t extends Comparable<t>>{
         b = a.getRight();
         c = b.getLeft();
 
-        a.setRight(null);
-        b.setLeft(null);
-        c.setLeft(a);
+        b.setLeft(c.getRight());
         c.setRight(b);
-
-        c = a;
-
+        a.setRight(c.getLeft());
+        c.setLeft(a);
+        if(c.getFatBal() == 1)
+        {
+            a.setFatBal(-1);
+        }
+        else
+        {
+            a.setFatBal(0);
+        }
+        if(c.getFatBal() == -1)
+        {
+            b.setFatBal(1);
+        }
+        else
+        {
+            b.setFatBal(0);
+        }
+        
+        a = c;
         a.setFatBal(0);
         return a;
     }
@@ -131,13 +148,28 @@ public class AVLTree <t extends Comparable<t>>{
         b = a.getLeft();
         c = b.getRight();
 
-        a.setLeft(null);
-        b.setRight(null);
-        c.setLeft(c);
+        b.setRight(c.getLeft());
+        c.setLeft(b);
+        a.setLeft(c.getRight());
         c.setRight(a);
+        if(c.getFatBal() == -1)
+        {
+            a.setFatBal(1);
+        }
+        else
+        {
+            a.setFatBal(0);
+        }
+        if(c.getFatBal() == 1)
+        {
+            b.setFatBal(-1);
+        }
+        else
+        {
+            b.setFatBal(0);
+        }
 
-        c = a;
-
+        a = c;
         a.setFatBal(0);
         return a;
     }

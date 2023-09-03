@@ -48,4 +48,10 @@ public class Node <t>{
     void setRight(Node<t> right){
         this.right = right;
     }
+
+    //PARA FICAR MELHOR NO DEBUG, NAO INTERFERE NO CODIGO
+    @Override
+    public String toString(){
+        return info.toString();
+    }
 }
