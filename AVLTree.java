@@ -288,8 +288,8 @@ public class AVLTree <t extends Comparable<t>>{
             /*pai.setRight(filho.getLeft());
             filho.setLeft(r.getLeft());
             filho.setRight(r.getRight());
-            
             r = filho;*/
+            
             return r;
         }
     }
