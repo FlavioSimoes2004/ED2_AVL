@@ -284,6 +284,12 @@ public class AVLTree <t extends Comparable<t>>{
                 filho.setRight(r.getRight());
                 r = filho;
             }
+
+            /*pai.setRight(filho.getLeft());
+            filho.setLeft(r.getLeft());
+            filho.setRight(r.getRight());
+            
+            r = filho;*/
             return r;
         }
     }
