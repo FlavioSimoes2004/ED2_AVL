@@ -236,10 +236,34 @@ public class AVLTree <t extends Comparable<t>>{
             else if(compare < 0)
             {
                 r.setLeft(removeNode(r.getLeft(), info));
+                switch(r.getLeft().getFatBal())
+                {
+                    case 0:
+                        r.setFatBal(r.getFatBal() + 1);
+                    break;
+
+                    case -1:
+                        //r.setFatBal();
+                    break;
+
+                    case 1:
+
+                    break;
+                }
             }
             else
             {
                 r.setRight(removeNode(r.getRight(), info));
+                switch(r.getRight().getFatBal())
+                {
+                    case 0:
+                        r.setFatBal(r.getFatBal() - 1);
+                    break;
+
+                    case -1:
+                    case 1:
+                    break;
+                }
             }
         }
 
