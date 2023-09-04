@@ -14,17 +14,13 @@ public class Main {
         tree.remove(10);
         tree.inserir(5);*/
 
-        tree.inserir(50);
+        tree.inserir(100);
         tree.inserir(25);
-        tree.inserir(75);
-        tree.inserir(10);
-        tree.inserir(30);
-        tree.inserir(60);
-        tree.inserir(76);
+        tree.inserir(175);
+        tree.inserir(20);
+        tree.inserir(50);
 
-
-        tree.remove(50);
-        tree.remove(30);
+        tree.remove(175);
 
         tree.passeioEmOrdem();
         System.out.println("");

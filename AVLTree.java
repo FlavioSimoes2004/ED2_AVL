@@ -234,7 +234,7 @@ public class AVLTree <t extends Comparable<t>>{
             if(compare == 0)
             {
                 r = removeNode(r);
-                Node<t> right = r.getRight();
+                /*Node<t> right = r.getRight();
                 Node<t> left = r.getLeft();
                 if(left != null && right != null)
                 {
@@ -264,7 +264,7 @@ public class AVLTree <t extends Comparable<t>>{
                             r.setFatBal(0);
                         }
                     }
-                }
+                }*/
             }
             else if(compare < 0)
             {
@@ -314,6 +314,14 @@ public class AVLTree <t extends Comparable<t>>{
                         break;
 
                         case 0:
+                            if(r.getFatBal() == -2)
+                            {
+                                r = rotateSimpleRight(r);
+                            }
+                            else
+                            {
+
+                            }
                             status = false;
                         break;
                     }
