@@ -288,6 +288,10 @@ public class AVLTree <t extends Comparable<t>>{
                         break;
 
                         case 0:
+                            if(r.getFatBal() == 2)
+                            {
+                                r = rotateSimpleLeft(r);
+                            }
                             status = false;
                         break;
                     }
@@ -317,10 +321,6 @@ public class AVLTree <t extends Comparable<t>>{
                             if(r.getFatBal() == -2)
                             {
                                 r = rotateSimpleRight(r);
-                            }
-                            else
-                            {
-
                             }
                             status = false;
                         break;
