@@ -221,7 +221,9 @@ public class AVLTree <t extends Comparable<t>>{
         }
         else
         {
+            status = true;
             root = removeNode(root, info);
+            status = false;
         }
     }
 
@@ -236,27 +238,26 @@ public class AVLTree <t extends Comparable<t>>{
             else if(compare < 0)
             {
                 r.setLeft(removeNode(r.getLeft(), info));
-                if(status)
+                if(r.getLeft() == null && r.getRight() == null)
                 {
+                    r.setFatBal(0);
                 }
-                if(r.getLeft() == null)
+                else if(r.getLeft() == null)
                 {
                     r.setFatBal(r.getFatBal() + 1);
-                }
-                else
-                {
-                    switch(r.getLeft().getFatBal())
+
+                    switch(r.getRight().getFatBal())
                     {
-                        case 0:
-                            r.setFatBal(r.getFatBal() + 1);
-                        break;
-    
-                        case -1:
-                        
-                        break;
-    
                         case 1:
-    
+                            r = rotateSimpleLeft(r);
+                        break;
+
+                        case -1:
+                            r = rotateDoubleLeft(r);
+                        break;
+
+                        case 0:
+                            status = false;
                         break;
                     }
                 }
@@ -264,23 +265,25 @@ public class AVLTree <t extends Comparable<t>>{
             else
             {
                 r.setRight(removeNode(r.getRight(), info));
-                if(status)
+                if(r.getRight() == null && r.getLeft() == null)
                 {
+                    r.setFatBal(0);
                 }
-                if(r.getRight() == null)
+                else if(r.getRight() == null)
                 {
                     r.setFatBal(r.getFatBal() - 1);
-                }
-                else
-                {
-                    switch(r.getRight().getFatBal())
+                    switch(r.getLeft().getFatBal())
                     {
-                        case 0:
-                            r.setFatBal(r.getFatBal() - 1);
-                        break;
-    
                         case -1:
+                            r = rotateSimpleRight(r);
+                        break;
+
                         case 1:
+                            r = rotateDoubleRight(r);
+                        break;
+
+                        case 0:
+                            status = false;
                         break;
                     }
                 }
@@ -317,7 +320,7 @@ public class AVLTree <t extends Comparable<t>>{
             if(r.getLeft().equals(filho))
             {
                 pai.setLeft(filho.getLeft());
-                pai.setFatBal(0);
+                pai.setFatBal(0); //SE GETLEFT == NULL
                 if(filho.getLeft() != null)
                 {
                     pai.setFatBal(-1);
@@ -328,42 +331,11 @@ public class AVLTree <t extends Comparable<t>>{
                 pai.setRight(filho.getLeft());
                 pai.setFatBal(pai.getFatBal() - 1);
             }
-            
-            switch(pai.getFatBal())
-            {
-                case -2:
-                    if(pai.getLeft().getFatBal() == -1)
-                    {
-                        pai = rotateSimpleRight(pai);
-                    }
-                    else if(pai.getLeft().getFatBal() == 1)
-                    {
-                        pai = rotateDoubleRight(pai);
-                    }
-                break;
-            }
 
-            filho.setLeft(pai);
+            filho.setLeft(r.getLeft());
             filho.setRight(r.getRight());
             filho.setFatBal(r.getFatBal());
             r = filho;
-            switch(r.getFatBal())
-            {
-                case 2:
-                    int right = r.getRight().getFatBal();
-                    if(right == 1)
-                    {
-                        r = rotateSimpleRight(r);
-                    }
-                    else if(right == -1)
-                    {
-                        r = rotateDoubleRight(r);
-                    }
-                break;
-
-                default:
-                break;
-            }
             
             return r;
         }
