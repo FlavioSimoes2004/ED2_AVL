@@ -20,9 +20,12 @@ public class Main {
         tree.inserir(10);
         tree.inserir(30);
         tree.inserir(60);
+        tree.inserir(76);
         tree.inserir(12);
 
-        tree.remove(12);
+
+        tree.remove(50);
+        tree.remove(30);
 
         tree.passeioEmOrdem();
         System.out.println("");
