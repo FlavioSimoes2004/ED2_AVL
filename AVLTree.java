@@ -202,19 +202,24 @@ public class AVLTree <t extends Comparable<t>>{
         if(root != null)
         {
             LinkedList<Node<t>> fila = new LinkedList<>();
+            LinkedList<Integer> level = new LinkedList<>();
             fila.push(root);
+            level.push(0);
             Node<t> current = null;
             while(fila.size() > 0)
             {
                 current = fila.removeLast();
-                System.out.print(current.getInfo() + ", ");
+                Integer nivel = level.removeLast();
+                System.out.print(current.getInfo() + "(nivel: " + nivel + "), ");
                 if(current.getLeft() != null)
                 {
                     fila.push(current.getLeft());
+                    level.push(nivel + 1);
                 }
                 if(current.getRight() != null)
                 {
                     fila.push(current.getRight());
+                    level.push(nivel + 1);
                 }
             }
         }
