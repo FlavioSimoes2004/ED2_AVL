@@ -233,14 +233,6 @@ public class AVLTree <t extends Comparable<t>>{
         {
             r.setFatBal(0);
         }
-        /*else if(r.getLeft() == null)
-        {
-            r.setFatBal(1);
-        }
-        else if(r.getRight() == null)
-        {
-            r.setFatBal(-1);
-        }*/
         else
         {
             r.setFatBal(rightHeight - leftHeight);
@@ -279,6 +271,35 @@ public class AVLTree <t extends Comparable<t>>{
                 r = removeNode(r);
                 if(isRoot)
                 {
+                    checkBal(r, 0);
+                    
+                    switch(r.getFatBal())
+                    {
+                        case -2:
+                            if(r.getLeft().getRight() != null)
+                            {
+                                //rodar direita DUPLA
+                            }
+                            else
+                            {
+                                //rodar direita SIMPLES
+                            }
+                        break;
+    
+                        case 2:
+                            if(r.getRight().getLeft() != null)
+                            {
+                                //rodar esquerda DUPLA
+                                r = rotateDoubleLeft(r);
+                            }
+                            else
+                            {
+                                //rodar esquerda SIMPLES
+                                r = rotateSimpleLeft(r);
+                            }
+                        break;
+                    }
+    
                     checkBal(r, 0);
                 }
             }
