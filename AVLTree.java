@@ -279,10 +279,12 @@ public class AVLTree <t extends Comparable<t>>{
                             if(r.getLeft().getRight() != null)
                             {
                                 //rodar direita DUPLA
+                                r = rotateDoubleRight(r);
                             }
                             else
                             {
                                 //rodar direita SIMPLES
+                                r = rotateSimpleRight(r);
                             }
                         break;
     
