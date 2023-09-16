@@ -99,6 +99,8 @@ public class AVLTree <t extends Comparable<t>>{
         a.setFatBal(0);
 
         a = b;
+        a.setFatBal(a.getRight().getFatBal() - a.getLeft().getFatBal());
+
         return a;
     }
 
@@ -109,6 +111,8 @@ public class AVLTree <t extends Comparable<t>>{
         a.setFatBal(0);
         
         a = b;
+        a.setFatBal(a.getRight().getFatBal() - a.getLeft().getFatBal());
+
         return a;
     }
 
@@ -139,7 +143,8 @@ public class AVLTree <t extends Comparable<t>>{
         }
         
         a = c;
-        a.setFatBal(0);
+        //a.setFatBal(0);
+        a.setFatBal(a.getRight().getFatBal() - a.getLeft().getFatBal());
         return a;
     }
 
@@ -170,7 +175,8 @@ public class AVLTree <t extends Comparable<t>>{
         }
 
         a = c;
-        a.setFatBal(0);
+        //a.setFatBal(0);
+        a.setFatBal(a.getRight().getFatBal() - a.getLeft().getFatBal());
         return a;
     }
 
@@ -214,6 +220,36 @@ public class AVLTree <t extends Comparable<t>>{
         }
     }
 
+    private int checkBal(Node<t> r, int altura){
+        if(r == null)
+        {
+            return altura;
+        }
+
+        int leftHeight = checkBal(r.getLeft(), altura + 1);
+        int rightHeight = checkBal(r.getRight(), altura + 1);
+
+        if(r.getLeft() == null && r.getRight() == null)
+        {
+            r.setFatBal(0);
+            return 0;
+        }
+        else if(r.getLeft() == null)
+        {
+            r.setFatBal(1);
+        }
+        else if(r.getRight() == null)
+        {
+            r.setFatBal(-1);
+        }
+        else
+        {
+            r.setFatBal(rightHeight - leftHeight);
+        }
+
+        return altura;
+    }
+
     public void remove(t info){
         if(root == null)
         {
@@ -235,71 +271,30 @@ public class AVLTree <t extends Comparable<t>>{
             if(compare == 0)
             {
                 r = removeNode(r);
-                if(isRoot == false)
-                {
-                    if(r != null)
-                    {
-                        Node<t> right = r.getRight();
-                        Node<t> left = r.getLeft();
-                        if(left != null && right != null)
-                        {
-                            if((left.getFatBal() == 1 || left.getFatBal() == -1) && (right.getFatBal() == 1 || right.getFatBal() == -1))
-                            {
-                                r.setFatBal(0);
-                            }
-                            else if(left.getFatBal() == 0)
-                            {
-                                if(left.getLeft() == null)
-                                {
-                                    r.setFatBal(1);
-                                }
-                                else
-                                {
-                                    r.setFatBal(0);
-                                }
-                            }
-                            else if(right.getFatBal() == 0)
-                            {
-                                if(right.getRight() == null)
-                                {
-                                    r.setFatBal(-1);
-                                }
-                                else
-                                {
-                                    r.setFatBal(0);
-                                }
-                            }
-                        }
-                    }
-                }
             }
             else if(compare < 0)
             {
                 r.setLeft(removeNode(r.getLeft(), info));
-                if(r.getLeft() == null && r.getRight() == null)
+                if(status)
                 {
-                    r.setFatBal(0);
-                }
-                else if(r.getLeft() == null)
-                {
-                    r.setFatBal(r.getFatBal() + 1);
-
-                    switch(r.getRight().getFatBal())
+                    switch(r.getFatBal())
                     {
-                        case 1:
-                            r = rotateSimpleLeft(r);
-                        break;
-
-                        case -1:
-                            r = rotateDoubleLeft(r);
-                        break;
-
                         case 0:
-                            if(r.getFatBal() == 2)
+                            r.setFatBal(1);
+                            status = false;
+                        break;
+    
+                        //rotacionar
+                        case 1:
+                            if(r.getRight().getFatBal() == -1)
+                            {
+                                r = rotateDoubleLeft(r);
+                            }
+                            else
                             {
                                 r = rotateSimpleLeft(r);
                             }
-                            status = false;
+                            checkBal(r, 0);
                         break;
                     }
                 }
@@ -307,29 +302,26 @@ public class AVLTree <t extends Comparable<t>>{
             else
             {
                 r.setRight(removeNode(r.getRight(), info));
-                if(r.getRight() == null && r.getLeft() == null)
+                if(status)
                 {
-                    r.setFatBal(0);
-                }
-                else if(r.getRight() == null)
-                {
-                    r.setFatBal(r.getFatBal() - 1);
-                    switch(r.getLeft().getFatBal())
+                    switch(r.getFatBal())
                     {
-                        case -1:
-                            r = rotateSimpleRight(r);
-                        break;
-
-                        case 1:
-                            r = rotateDoubleRight(r);
-                        break;
-
                         case 0:
-                            if(r.getFatBal() == -2)
+                            r.setFatBal(-1);
+                            status = false;
+                        break;
+    
+                        //rotacionar
+                        case -1:
+                            if(r.getLeft().getFatBal() == 1)
+                            {
+                                r = rotateDoubleRight(r);
+                            }
+                            else
                             {
                                 r = rotateSimpleRight(r);
                             }
-                            status = false;
+                            checkBal(r, 0);
                         break;
                     }
                 }
@@ -363,25 +355,18 @@ public class AVLTree <t extends Comparable<t>>{
                 filho = filho.getRight();
             }
 
-            if(r.getLeft().equals(filho))
-            {
-                pai.setLeft(filho.getLeft());
-                pai.setFatBal(0); //SE GETLEFT == NULL
-                if(pai.getLeft() != null)
-                {
-                    pai.setFatBal(-1);
-                }
-            }
-            else
+            if(r.getLeft().equals(pai))
             {
                 pai.setRight(filho.getLeft());
                 pai.setFatBal(pai.getFatBal() - 1);
             }
+            else
+            {
+                pai.setLeft(filho.getLeft());
+                pai.setFatBal(pai.getFatBal() + 1);
+            }
 
-            filho.setLeft(r.getLeft());
-            filho.setRight(r.getRight());
-            filho.setFatBal(r.getFatBal());
-            r = filho;
+            r.setInfo(filho.getInfo());
             
             return r;
         }
