@@ -223,7 +223,7 @@ public class AVLTree <t extends Comparable<t>>{
     private int checkBal(Node<t> r, int altura){
         if(r == null)
         {
-            return altura;
+            return altura - 1;
         }
 
         int leftHeight = checkBal(r.getLeft(), altura + 1);
@@ -232,22 +232,28 @@ public class AVLTree <t extends Comparable<t>>{
         if(r.getLeft() == null && r.getRight() == null)
         {
             r.setFatBal(0);
-            return 0;
         }
-        else if(r.getLeft() == null)
+        /*else if(r.getLeft() == null)
         {
             r.setFatBal(1);
         }
         else if(r.getRight() == null)
         {
             r.setFatBal(-1);
-        }
+        }*/
         else
         {
             r.setFatBal(rightHeight - leftHeight);
         }
 
-        return altura;
+        if(rightHeight > leftHeight)
+        {
+            return rightHeight;
+        }
+        else
+        {
+            return leftHeight;
+        }
     }
 
     public void remove(t info){
@@ -271,6 +277,10 @@ public class AVLTree <t extends Comparable<t>>{
             if(compare == 0)
             {
                 r = removeNode(r);
+                if(isRoot)
+                {
+                    checkBal(r, 0);
+                }
             }
             else if(compare < 0)
             {

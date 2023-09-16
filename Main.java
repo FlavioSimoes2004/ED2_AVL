@@ -17,6 +17,8 @@ public class Main {
         tree.remove(4); //certo
         tree.remove(8); //certo
         tree.remove(6); //certo
+        tree.remove(5); //certo
+        tree.remove(3);
 
         tree.passeioEmOrdem();
         System.out.println("");
