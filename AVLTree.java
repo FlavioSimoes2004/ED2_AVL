@@ -393,14 +393,14 @@ public class AVLTree <t extends Comparable<t>>{
                 filho = filho.getRight();
             }
 
-            if(r.getLeft().equals(pai))
+            if(filho.equals(r.getLeft()))
             {
-                pai.setRight(filho.getLeft());
+                pai.setLeft(filho.getLeft());
                 pai.setFatBal(pai.getFatBal() - 1);
             }
             else
             {
-                pai.setLeft(filho.getLeft());
+                pai.setRight(filho.getLeft());
                 pai.setFatBal(pai.getFatBal() + 1);
             }
 
